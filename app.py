@@ -1,5 +1,6 @@
-from flask import Flask, redirect, url_for, render_template, request, flash, session
+from flask import Flask, redirect, url_for, render_template, request, flash, session, get_flashed_messages
 import base64
+import json
 
 app = Flask(__name__)
 app.secret_key = "secret_key"
@@ -30,7 +31,30 @@ def site():
 def alias():
     if not session.get("logged_in"):
         return redirect(url_for("login"))
-    return render_template("/alias.html")
+    with open('alias.json', 'r') as f:
+        alias_list = json.load(f)
+    return render_template('/alias.html', alias_list=alias_list)
+
+@app.route("/alias_list_json")
+def alias_list_json():
+    with open("alias.json", "r") as f:
+        alias = json.load(f)
+    return json.dumps(alias)
+
+    
+@app.route("/rules_filter")
+def rules_filter():
+    if not session.get("logged_in"):
+        return redirect(url_for("login"))
+    with open('nat.json', 'r') as f:
+        nat_list = json.load(f)
+    return render_template('nat.html', nat_list=nat_list)
+
+@app.route("/rules_nat_add ")
+def rules_nat_add():
+    if not session.get("logged_in"):
+        return redirect(url_for("login"))
+    return render_template("/modif.html")
 
 @app.route("/logout")
 def logout():
@@ -38,13 +62,4 @@ def logout():
     session.pop("username", None)
     flash("Vous êtes maintenant déconnecté.")
     return redirect(url_for("login"))
-
-@app.route("/rules_filter")
-def rules_filter():
-    return render_template("/nat.html")
-
-@app.route("/rules_nat_add ")
-def rules_nat_add():
-    return render_template("/modify.html")
-
 

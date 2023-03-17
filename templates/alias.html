@@ -18,6 +18,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <!-- Vendor CSS Files -->
   <link href="{{url_for('static',filename='assets/vendor/aos/aos.css')}}" rel="stylesheet">
@@ -46,9 +47,9 @@
   <header id="header" class="fixed-top header-inner-pages">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo me-auto"><a href="index.html">Site lp</a></h1>  
+      <h1 class="logo me-auto"><a href="{{url_for('site') }}">Site lp</a></h1>  
       <!-- Uncomment below if you prefer to use an image logo -->
-      <a href="index.html" class="logo me-auto"><img src="annecy.png" alt="" class="img-fluid"></a>
+      <a href="{{url_for('site') }}" class="logo me-auto"><img src="{{url_for('static',filename='assets/annecy.png')}}" alt="" class="img-fluid"></a>
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -76,22 +77,24 @@
 
     <section class="inner-page">
       <div class="container">
-        <table class="table table-dark">
-			<thead>
-				<tr>
-					<th>Alias</th>
-					<th>Adresse IP</th>
-					<th>Port</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Alias 1</td>
-					<td>192.168.0.100</td>
-					<td>8080</td>
-				</tr>
-			</tbody>
-        </table>
+          <table class="table table-dark">
+            <thead>
+              <tr>
+                <th>Alias</th>
+                <th>Adresse IP</th>
+                <th>Port</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for alias in alias_list %}
+              <tr>
+                <td>{{ alias['alias'] }}</td>
+                <td>{{ alias['ip_address'] }}</td>
+                <td>{{ alias['port'] }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>          
         <div>
         </div>
       </div>
@@ -137,6 +140,7 @@
   <!-- Template Main JS File -->
   <!-- <script src="assets/js/main.js"></script> -->
   <script src="{{url_for('static',filename='assets/js/main.js')}}"></script>
+  <script src="{{url_for('static',filename='assets/updateAliasTable.js')}}"></script>
 
 </body>
 
